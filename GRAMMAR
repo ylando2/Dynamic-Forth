@@ -1,6 +1,6 @@
 Here is an idea for a grammar to Dynamic Forth:
-the compiler have values in lambda and outside of lambdas
-to help translate the behavior of binding macros.
+// the compiler have values in lambda and outside of lambdas
+// to help translate the behavior of binding macros.
 
 prog: word-out*
 

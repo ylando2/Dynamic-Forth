@@ -1,0 +1,44 @@
+Dynamic Forth version 0.1
+
+0. Apologize:
+First of all, I must admit that English is not my mother tongue so 
+I apologize in advance for all the English mistake that I will make.
+
+1. Introduction:
+I was thinking about a minimal scripting language;
+a really easy user friendly language for writing simple scripts.
+I had an idea: What will happen if I mix forth and scheme.
+What will happen if forth was dynamic language with lambdas (blocks)?
+What will happen if functions will get values backward from the stack
+but the syntax will read the next words forward?
+I already know about Factor language but it feels too low level for my taste.
+
+To test my language you will have to do the following steps:
+  a. Type "perl dynamic-forth.pl < test.df > test.scm" in Bash.
+  b. Run test.scm with a scheme compiler. 
+ 
+2. About me:
+I live in Israel. I am working in costumer service, dreaming about
+being entrepreneur and create my own company.
+My email address is ylando2@gmail.com please contact me; 
+if you have a serious job to offer me or 
+if you want to contribute to my open source projects.
+
+3. Motivation:
+I have the following use cases for my language:
+  a. It can be use to replace the Linux dc command.
+  b. We can compile the programs to guile scheme and use it instead of guile.
+  c. I have an idea of a real time strategy game, where the players
+     use only the keyboard to control their units. In this game every player
+     will be able to use this language to control their units.
+
+4. List of files:
+This directory contain the following files:
+  a. dynamic-forth.pl - The compiler that compiles dynamic forth to scheme.
+  b. API - The language API.
+  c. TODO - A list of ideas to implement in the next versions of the language.
+  d. GRAMMAR - The BNF grammar for my language.
+  e. test.df - A program written in dynamic forth to test the compiler.
+
+5. License:
+Dynamic Forth is released under the MIT license.

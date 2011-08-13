@@ -1,0 +1,37 @@
+Here is an idea for a grammar to Dynamic Forth:
+// the compiler have values in lambda and outside of lambdas
+// to help translate the behavior of binding macros.
+
+prog: word-out*
+
+comment: // \/\/[^\n]*\n regex it shell treat comment like white space
+
+list-in: ( word-in* )
+list-out: ( word-out* )
+lambda: [ lambda1 ]
+      | [ lambda2 ]
+lambda1: word-in*
+lambda2: var* | word-in*
+const: text | number
+text: // a text regex 
+number: // a number regex
+val-in: list-in | lambda | const
+val-out: list-out | lambda | const
+var: // a var regex
+word-in: var | val-in | macro-in 
+word-out: var | val-out | macro-out 
+
+// Macros are an easy way to expand the compiler 
+macro1-in(name,args*): name args*
+macro2-in(name): name word-in* ;
+macro-in: macro1-in( _ , _ ) | macro2-in( _ )
+macro1-out(name,args*): name args*
+macro2-out(name): name word-out* ;
+macro-out: macro1-out( _ , _ ) | macro2-out( _ )
+
+do-not-exapnd-var: // Same as var it is good for macros
+do-not-expand-const: // "
+do-not-expand-text: // "
+do-not-expand-number: // "
+do-not-expand-list: // "
+  

@@ -1,0 +1,102 @@
+Here is my API for Dynamic-Forth language version 0.1:
+
+Here are the list of words:
+
+Binding words:
+( word ) defun fun-name : 
+   It takes a lambda from the stack and make it a function with fun-name name.
+( word ) defvar var-name:
+   It takes a value from the stack and make it a variable with var-name name.
+defun* var lambda: same as defun but does not take a lambda from the stack.
+defvar* var-name value: "
+( word ) setfun fun-name: same as defun but it set an existing function-name.
+( word ) setvar var-name: "
+setfun* fun-name lambda: "
+setvar* var-name value: "
+
+Conditional words:
+( word ) if true-lambda false-lambda: 
+   It take a value from the stack and if it is true run true-lambda 
+   other wise run false-lambda.
+( word ) when true-lambda:
+   The same as if with only true-lambda.
+( word ) unless false-lambda:
+   The same as if with only false-lambda.
+cond 
+  conditional-lambda_1 body-lambda_1
+  conditional-lambda_2 body-lambda_2
+  ...
+; 
+  Run the body lambda for the first conditional lambda that return true. 
+( word ) case
+  list-or-element1 b-lambda_1
+  list-or-element2 b-lambda_2
+  ...
+;
+   Take a value from the stack and run the body lambda for the first
+   list of elements or element that is equal to this value.
+( word ) list?: take a value from the stack and return true if it is a list.
+
+Special words: 
+point fun-name ( word* ) ;
+  Create a fun-name that is used to skip the words till the ;
+defun+ fun-name lambda
+  Create a function fun-name with an inner function return that can be
+  used to escape this function ;
+yield: suspend the word on a function that was created by defun+ and 
+       push to the stack a function that resume.
+
+Iteration words:
+I took the names from the Arc language. The language created by Paul Graham.
+
+while lambda-cond lambda-body:
+  Run lambda-body while lambda-cond return true.
+( lambda-body lambda-cond ) do-while:
+  Run lambda-body at least ones and continue until lambda-cond return false.
+until lambda-cond lambda-body:
+  Run lambda-body while lambda-cond return false. 
+( lambda-body lambda-cond ) do-until:
+  Run lambda-body at least ones and continue until lambda-cond return true.
+( list lambda-body ) each:
+  For each element of the list push it to the stack and call lambda-body.
+for start-value end-value lambda-body:
+  For each number from start-value to end-value - 1 move in ascending order by 1,
+  push the number to the stack and call lambda-body.
+down start-value end-value lambda-body:
+  For each number from start-value to end-value move in descending order by 1,
+  push the number to the stack and call lambda-body.
+for-by start-value end-value step-value lambda-body:
+  Same as for but move by step-value.
+down-by start-value end-value step-value:
+  Same as down but move by step-value.
+loop lambda-init lambda-cond lambda-update lambda-body:
+  First init values using lambda-init. While lambda-cond return true
+  call lambda-body and lambda-update. 
+( num lambda-body ) repeat:
+  Call lambda-body num times.
+
+Stack manipulation words:
+( word ) dup: 
+  Duplicate the first word on the stack. 
+( word ) drop: 
+  Drop the first word on the stack.
+( word1 word2 ) swap:
+  swap the first word with the second word of the stack.
+( word* n ) pick:
+  Duplicate the n word of the stack.
+( word* n ) roll:
+  Move the n word of the stack to the top of the stack.
+( word* ) rot-up:
+  Move the top of the stack to the bottom.
+( word* ) rot-down:
+  Move the bottom of the stack to the top.
+( word* ) reverse-stack: use only for debugging.
+  Reverse the order of the words on the stack.
+Output words:
+( word ) pr:
+  Print the word.
+( word ) prn:
+  Print the word and a new line.
+nl:
+  Print a new line.
+

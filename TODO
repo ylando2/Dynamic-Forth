@@ -1,0 +1,27 @@
+Here are my objectives of the next two versions:
+
+Version 0.2:
+1) Build fast cond and fast case statement
+2) Change *global-stack* to *cur-stack* so we can have try-catch statement
+   in this way We will use
+   (let ((*cur-stack* ('() . *cur-stack*))) 
+      ... )
+   We will add (s->u) and (u->s) functions: 
+   stack to upper stack and upper stack to stack.
+   the map1 function in the test will have to change to
+   defun* map1 [ ( u->s u->s each ) ] 
+   or
+   defun* map1 [ lst fn | ( lst fn each ) ]
+   becouse list will be build in a lower stack.
+3) Find out if there is a library like perl (RecDecent) in scheme,
+   and if there is build a compiler with proper error handling
+   with it.
+4) Add exception handling by: try [ ... ] [ ... ]
+   It has try lambda and catch lambda (it will run in lower stack).
+5) Add destruction bind similar to arc; for example:
+   [ ds-def ( x ( y . rest ) ( o z 3 ) ) 
+     x y z rest car rest cdr [ + ] each + + + ]
+
+Version 0.3:
+1) Add an infix mini language for example:
+   e 1+2^3*4 ;

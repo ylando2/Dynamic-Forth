@@ -1,0 +1,120 @@
+[ x y | y x ] defun swap2 
+"Swapping 1 2: " pr 1 2 swap2 reverse-stack pr " " pr prn 
+"If we don't swap 1 2: " pr 1 2 reverse-stack pr " " pr prn
+nl
+
+"1 dup=" pr 1 dup pr " " pr prn
+"1 2 swap=" pr 1 2 swap reverse-stack pr " " pr prn
+"1 2 3 depth=" pr 1 2 3 depth prn 
+"1 2 3 drop depth=" pr drop depth prn 
+drop drop 
+nl
+
+"testing: defvar* x 2 " prn
+defvar* x [ 2 ] "x=" pr x call prn
+nl
+
+"1 2 + is equal to: " pr 1 2 + prn
+nl
+
+"print the list ( 1 2 3 ): " pr
+( 1 2 3 ) prn
+"checking if ( 1 2 3 ) is a list: " pr ( 1 2 3 ) list? prn
+"checking if ( ) is a list: " pr ( ) list? prn
+nl
+
+cond 
+[ 0 ] [ "This should not run" prn ]
+[ 1 ] [ "run inside cond" prn ]
+;
+nl
+
+"The 1 value is in: " pr
+1 case  
+0 [ "case 0" prn ]
+( 2 1 ) [ "case (2 1)" prn ]
+;
+nl
+
+"The value for the if statment is: " dup pr
+1 if [ "true" prn ] [ "false" prn ] 
+pr
+0 if [ "true" prn ] [ "false" prn ]  
+nl
+
+1 when [ "Inside when" prn ] 
+0 unless [ "Inside unless" prn ]
+nl
+
+point ret "Before ret" prn ret "After ret" prn ;
+nl
+
+defun+ fun [ "Before yield " prn yield "After yield " prn ] 
+fun "Before call " prn call "After call " prn
+nl
+
+defun+ fun2 [ "Before return " prn return "After return " prn ] 
+fun2 nl
+
+"Checking the iterations statments" prn
+1 while [ dup 5 <= ] [ dup pr 1 + ] nl drop
+1 [ dup pr 1 + ] [ dup 5 <= ] do-while nl drop
+1 until [ dup 5 > ] [ dup pr 1 + ] nl drop
+1 [ dup pr 1 + ] [ dup 5 > ] do-until nl drop
+( 1 2 3 4 5 ) [ pr ] each nl
+for 1 6 [ pr ] nl
+down 5 1 [ pr ] nl
+for-by 1 5.1 0.5 [ pr " " pr ] nl
+down-by 5 1 0.5 [ pr " " pr ] nl
+loop [ 1 ] [ dup 5 <= ] [ 1 + ] 
+     [ dup pr ] nl drop
+1 5 [ dup pr 1 + ] repeat nl drop
+nl
+
+// Other functions
+"Other functions:" prn
+"1 2 3 2 pick => " pr 1 2 3 2 pick reverse-stack 
+4 [ pr " " pr ] repeat nl
+"1 2 3 2 roll => " pr 1 2 3 2 roll reverse-stack
+3 [ pr " " pr ] repeat nl
+"1 2 3 rot-up => " pr 1 2 3 rot-up reverse-stack
+3 [ pr " " pr ] repeat nl
+"1 2 3 rot-down => " pr 1 2 3 rot-down reverse-stack
+3 [ pr " " pr ] repeat nl
+nl
+
+// Example of a usage
+"Here are a few example of a usage" prn
+
+// One way to implement map
+defun* map1 [ ( each ) ] 
+"Use map1 to double the elements of a list ( 1 2 3 4 5 ): " pr
+( 1 2 3 4 5 ) [ 2 * ] map1 prn nl
+
+defun* reverse [ lst | ( ) lst [ cons ] each ] 
+
+// Another way to implement map
+defun* map2 [ lst fn | ( ) lst [ fn call cons ] each reverse ] 
+"Use of map2 to double the elements of a list ( 1 2 3 4 5 ): " pr
+( 1 2 3 4 5 ) [ 2 * ] map2 prn nl
+
+defun* reduce [ lst fn | lst car lst cdr fn each ] 
+"Use of reduce to sum a list ( 1 2 3 4 ): " pr
+( 1 2 3 4 ) [ + ] reduce prn nl
+
+defun* flat-helper
+  [ [ e | e list? if
+             [ e flat-helper ]
+             [ e cons ] ] each ] 
+defun* flat [ ( ) swap flat-helper reverse ] 
+"A usage of flat function on ( 1 ( 2 3 ( 4 ) ) 5 ): " pr
+ ( 1 ( 2 3 ( 4 ) ) 5 ) flat prn nl
+ 
+"Now we make sure that the stack is not leaking." prn
+"The stack depth is: " pr depth prn 
+
+// Ideas about hash,array and object:
+// Examples in Dynamic Forth => Examples in Javascript.
+// a i @ 2 @ => a[i][j]
+// a "key1" # "key2" # => a["key1"]["key2"]
+// a -> b -> c => a.b.c 

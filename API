@@ -7,9 +7,11 @@ Binding words:
    It takes a lambda from the stack and make it a function with fun-name name.
 ( word ) defvar var-name:
    It takes a value from the stack and make it a variable with var-name name.
-defun* var lambda: same as defun but does not take a lambda from the stack.
+defun* var lambda: 
+   Same as defun but does not take a lambda from the stack.
 defvar* var-name value: "
-( word ) setfun fun-name: same as defun but it set an existing function-name.
+( word ) setfun fun-name: 
+   Same as defun but it set an existing function-name.
 ( word ) setvar var-name: "
 setfun* fun-name lambda: "
 setvar* var-name value: "

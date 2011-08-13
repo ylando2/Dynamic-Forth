@@ -115,6 +115,6 @@ defun* flat [ ( ) swap flat-helper reverse ]
 
 // Ideas about hash,array and object:
 // Examples in Dynamic Forth => Examples in Javascript.
-// a i @ 2 @ => a[i][j]
+// a i @ j @ => a[i][j]
 // a "key1" # "key2" # => a["key1"]["key2"]
 // a -> b -> c => a.b.c 

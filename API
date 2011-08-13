@@ -8,10 +8,14 @@ Binding words:
 ( word ) defvar var-name:
    It takes a value from the stack and make it a variable with var-name name.
 defun* var lambda: 
+defun* var lambda: 
    Same as defun but does not take a lambda from the stack.
+   same as defun but does not take a lambda from the stack.
 defvar* var-name value: "
 ( word ) setfun fun-name: 
+( word ) setfun fun-name: 
    Same as defun but it set an existing function-name.
+   same as defun but it set an existing function-name.
 ( word ) setvar var-name: "
 setfun* fun-name lambda: "
 setvar* var-name value: "
@@ -84,6 +88,7 @@ Stack manipulation words:
   Drop the first word on the stack.
 ( word1 word2 ) swap:
   swap the first word with the second word of the stack.
+  Swap the first word with the second word of the stack.
 ( word* n ) pick:
   Duplicate the n word of the stack.
 ( word* n ) roll:

@@ -10,11 +10,12 @@ Introduction
 ------------
 I was thinking about a minimal scripting language;
 a really easy user friendly language for writing simple scripts.
-I had an idea: What will happen if I mix forth and scheme.
-What will happen if forth was dynamic language with lambdas (blocks)?
-What will happen if functions will get values backward from the stack
-but the syntax will read the next words forward?
-I already know about Factor language but it feels too low level for my taste.
+I ask myself: What will happen if I mix Forth and Scheme.
+What will happen if Forth language was a dynamic language 
+with lambdas (blocks)? 
+What will happen if functions will get values backward 
+from the stack but the syntax will read the next words forward?
+The result was a dynamic language that compile to Scheme that I named Dynamic-Forth.
 
 To test my language you will have to do the following steps:
 

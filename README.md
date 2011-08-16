@@ -23,7 +23,7 @@ To test my language you will have to do the following steps:
          
         $ perl dynamic-forth.pl < test.df > test.scm 
 
-2. Run test.scm with a scheme compiler. 
+2. Run test.scm with a Scheme compiler. 
  
 About me
 --------

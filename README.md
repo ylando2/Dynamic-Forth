@@ -27,8 +27,7 @@ To test my language you will have to do the following steps:
  
 About me
 --------
-I live in Israel. I am working in costumer service, dreaming about
-being entrepreneur and create my own company.  
+I live in Israel. I am looking for a job.
 If you have a serious job to offer me or if you want to contribute to my open source projects; please contact me; my email address is: ylando2@gmail.com 
 
 Motivation

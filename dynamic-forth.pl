@@ -209,11 +209,11 @@ sub generate_scheme_code
       if ($lambdaDepth)
       {
         $closeLet[-1]++;
-        push @words2,"(let (($var ($pop)))"; 
+        push @words2,"(let ((dynamic-forth-$var ($pop)))"; 
       }
       else
       {
-        push @words2,"(define $var ($pop))";
+        push @words2,"(define dynamic-forth-$var ($pop))";
       }
       next;
     }
@@ -224,11 +224,11 @@ sub generate_scheme_code
       if ($lambdaDepth)
       {
         $closeLet[-1]++;
-        push @words2,"(let (($var (pop->func)))";
+        push @words2,"(let ((dynamic-forth-$var (pop->func)))";
       }
       else
       {
-        push @words2,"(define $var (pop->func))";
+        push @words2,"(define dynamic-forth-$var (pop->func))";
       }
       next;
     }
@@ -279,7 +279,7 @@ sub generate_scheme_code
         next;
       }
     # default is a variable
-    push @words2,"($curWord)";
+    push @words2,"(dynamic-forth-$curWord)";
   }
   return join(" ",@words2);
 }
@@ -380,16 +380,16 @@ my $scheme_code=<<'END';
     ((_ "helper" (arg rest ...) (lst ...) body ...)
      (my-with-pop "helper" (rest ...) (arg lst ...) body ...))))
 
-(define (my-fun->fun+)
+(define (dynamic-forth-my-fun->fun+)
   (my-with-pop (fn)
     (push-global-stack
       (lambda ()
         (call-with-current-continuation
-          (lambda (return)
-            (push-global-stack return)
+          (lambda (dynamic-forth-return)
+            (push-global-stack dynamic-forth-return)
             (fn)))))))
 
-(define (rot-up)
+(define (dynamic-forth-rot-up)
   (if (not (or (null? *global-stack*) (null? (cdr *global-stack*))))
       (let ((temp (cdr *global-stack*)))
         (set-cdr! *global-stack* '())
@@ -399,7 +399,7 @@ my $scheme_code=<<'END';
               (loop (cdr p))))
         (set! *global-stack* temp))))
 
-(define (rot-down)
+(define (dynamic-forth-rot-down)
   (if (not (or (null? *global-stack*) (null? (cdr *global-stack*))))
       (let loop ((p *global-stack*))
         (if (null? (cddr p))
@@ -409,20 +409,20 @@ my $scheme_code=<<'END';
               (set! *global-stack* result))
             (loop (cdr p))))))
 
-(define (reverse-stack)
+(define (dynamic-forth-reverse-stack)
   (set! *global-stack* (reverse *global-stack*)))
 
-(define (depth)
+(define (dynamic-forth-depth)
   (push-global-stack *global-stack-depth*))
 
-(define (pick) 
+(define (dynamic-forth-pick) 
   (my-with-pop (pos)
     (let loop ((d pos) (p *global-stack*))
       (if (> d 0)
           (loop (- d 1) (cdr p))
           (push-global-stack (car p))))))
 
-(define (roll)
+(define (dynamic-forth-roll)
   (my-with-pop (pos)
     (when (> pos 0)
       (let loop ((d pos) (p *global-stack*))
@@ -451,9 +451,9 @@ my $scheme_code=<<'END';
 (define (my-list-end) 
   (push-global-stack (my-collect)))
   
-(define my-cond-start my-collect-mark)
+(define dynamic-forth-my-cond-start my-collect-mark)
 
-(define (my-cond-end) 
+(define (dynamic-forth-my-cond-end) 
   (let ((cond-lst (my-collect)))
     (let loop ((lst cond-lst))
       (unless (null? lst)
@@ -462,9 +462,9 @@ my $scheme_code=<<'END';
                    ((cadr lst))
                    (loop (cddr lst)))))))
  
-(define my-case-start my-collect-mark)
+(define dynamic-forth-my-case-start my-collect-mark)
  
-(define (my-case-end) 
+(define (dynamic-forth-my-case-end) 
    (let ((case-lst (my-collect))
          (value (pop-global-stack)))
      (let loop ((lst case-lst))
@@ -474,7 +474,7 @@ my $scheme_code=<<'END';
                ((cadr lst))
                (loop (cddr lst)))))))
 
-(define (_while)
+(define (dynamic-forth-_while)
   (my-with-pop (test body)
    (let loop ()
       (test)
@@ -482,7 +482,7 @@ my $scheme_code=<<'END';
                (body)
                (loop)))))
 
-(define (_until)
+(define (dynamic-forth-_until)
   (my-with-pop (test body)
    (let loop ()
       (test)
@@ -490,7 +490,7 @@ my $scheme_code=<<'END';
                (body)
                (loop)))))
 
-(define (do-while)
+(define (dynamic-forth-do-while)
   (my-with-pop (body test)
    (let loop ()
      (body)
@@ -498,7 +498,7 @@ my $scheme_code=<<'END';
      (my-if (pop-global-stack)
             (loop)))))  
 
-(define (do-until)
+(define (dynamic-forth-do-until)
   (my-with-pop (body test)
    (let loop ()
      (body)
@@ -506,7 +506,7 @@ my $scheme_code=<<'END';
      (my-unless (pop-global-stack)
                 (loop)))))
 
-(define (_loop)
+(define (dynamic-forth-_loop)
   (my-with-pop (start test update body)
    (start)
    (let loop () 
@@ -516,14 +516,14 @@ my $scheme_code=<<'END';
               (update)
               (loop)))))
 
-(define (repeat)
+(define (dynamic-forth-repeat)
   (my-with-pop (n body)
     (let loop ((i n))
       (when (> i 0)
         (body)
         (loop (- i 1))))))
 
-(define (each)
+(define (dynamic-forth-each)
   (my-with-pop (lst body)
     (let loop ((p lst))
       (unless (null? p)
@@ -531,7 +531,7 @@ my $scheme_code=<<'END';
         (body)
         (loop (cdr p))))))
 
-(define (_for)
+(define (dynamic-forth-_for)
   (my-with-pop (init max body)
    (let loop ((i init))
      (when (< i max)
@@ -539,7 +539,7 @@ my $scheme_code=<<'END';
        (body)
        (loop (+ i 1))))))
 
-(define (_down)
+(define (dynamic-forth-_down)
   (my-with-pop (init min body)
    (let loop ((i init))
      (when (>= i min)
@@ -547,7 +547,7 @@ my $scheme_code=<<'END';
        (body)
        (loop (- i 1))))))
 
-(define (_for-by)
+(define (dynamic-forth-_for-by)
   (my-with-pop (init max step body)
    (let loop ((i init))
      (when (< i max)
@@ -555,7 +555,7 @@ my $scheme_code=<<'END';
        (body)
        (loop (+ i step))))))
 
-(define (_down-by)
+(define (dynamic-forth-_down-by)
   (my-with-pop (init min step body)
    (let loop ((i init))
      (when (>= i min)
@@ -563,15 +563,15 @@ my $scheme_code=<<'END';
        (body)
        (loop (- i step))))))
 
-(define (_if)
+(define (dynamic-forth-_if)
   (my-with-pop (c true-body false-body)
      (my-if c (true-body) (false-body))))
 
-(define (_when)
+(define (dynamic-forth-_when)
   (my-with-pop (c body)
      (my-when c (body))))
 
-(define (_unless)
+(define (dynamic-forth-_unless)
   (my-with-pop (c body)
      (my-unless c (body))))
 
@@ -619,7 +619,7 @@ my $scheme_code=<<'END';
   (my-with-pop (a b)
    (push-global-stack (* a b))))
 
-(define (div)
+(define (dynamic-forth-div)
   (my-with-pop (a b)
    (push-global-stack (quotient a b))))
 
@@ -643,10 +643,10 @@ my $scheme_code=<<'END';
   (my-with-pop (lst e)
    (push-global-stack (cons e lst))))
 
-(define (call)
+(define (dynamic-forth-call)
   ((pop-global-stack)))
 
-(define (_point)
+(define (dynamic-forth-_point)
   (call-with-current-continuation 
    (lambda (cc)
      (my-with-pop (fn)
@@ -659,29 +659,29 @@ my $scheme_code=<<'END';
       (push-global-stack
         (lambda () 
           (call-with-current-continuation
-            (lambda (return)
-              (back return)))))
+            (lambda (dynamic-forth-return)
+              (back dynamic-forth-return)))))
       (ret))))
 
-(define (pr)
+(define (dynamic-forth-pr)
   (display (pop-global-stack)))
 
-(define (prn)
+(define (dynamic-forth-prn)
   (display (pop-global-stack))
   (newline))
 
-(define (nl)
+(define (dynamic-forth-nl)
   (newline))
 
-(define (dup) 
+(define (dynamic-forth-dup) 
   (push-global-stack (car *global-stack*)))
 
-(define (swap)
+(define (dynamic-forth-swap)
   (my-with-pop (a b)
     (push-global-stack b)
     (push-global-stack a)))
 
-(define (drop)
+(define (dynamic-forth-drop)
   (pop-global-stack))
 
 (define (_list?)
@@ -733,7 +733,7 @@ define_macro("defun+",["X","l"]
 define_macro("setfun+",["X","l"]
   ,"[ defun return l call return ] my-fun->fun+ setfun X",1);
 
-define_macro("yield",[],"(set! return (my-yield return))",0);
+define_macro("yield",[],"(set! dynamic-forth-return (my-yield dynamic-forth-return))",0);
 
 define_macro("cond",[],"[ call my-cond-end ] [ my-cond-start",1); 
 define_macro("case",[],"[ call my-case-end ] [ my-case-start",1);
